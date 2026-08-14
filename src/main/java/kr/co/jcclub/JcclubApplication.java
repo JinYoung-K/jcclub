@@ -23,8 +23,8 @@ public class JcclubApplication implements WebMvcConfigurer {
 				.setCacheControl(CacheControl.maxAge(Duration.ofDays(365)).cachePublic().immutable());
 
 		// ponytail: app.js는 파일명 버저닝이 없어 1시간으로 제한. 해시 파일명 도입 시 immutable로 올릴 것.
-		registry.addResourceHandler("/app.js")
-				.addResourceLocations("classpath:/static/app.js")
+		registry.addResourceHandler("/*.js")
+				.addResourceLocations("classpath:/static/")
 				.setCacheControl(CacheControl.maxAge(Duration.ofHours(1)).cachePublic());
 	}
 
