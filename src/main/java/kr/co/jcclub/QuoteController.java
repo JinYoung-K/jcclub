@@ -34,11 +34,11 @@ public class QuoteController {
 		});
 
 	private final JavaMailSender mailSender;
-	private final String to;
+	private final String[] to;
 	private final String from;
 
 	public QuoteController(JavaMailSender mailSender,
-	                       @Value("${quote.mail.to}") String to,
+	                       @Value("${quote.mail.to}") String[] to,
 	                       @Value("${quote.mail.from}") String from) {
 		this.mailSender = mailSender;
 		this.to = to;
