@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-cd /var/www/jcclub
+cd /var/www/jcclubtour
 git pull origin master
 
 ./gradlew build -x test --no-daemon
-JAR=/var/www/jcclub/build/libs/jcclub-0.0.1-SNAPSHOT.jar
+JAR=/var/www/jcclubtour/build/libs/jcclub-0.0.1-SNAPSHOT.jar
 
 pm2 stop jcclub 2>/dev/null || true
 pm2 delete jcclub 2>/dev/null || true
@@ -17,6 +17,6 @@ if [ -n "$PORT_PID" ]; then
     sleep 3
     kill -9 $PORT_PID 2>/dev/null || true
 fi
-pm2 start "java -Xmx512m -jar $JAR" --name "jcclub" --cwd /var/www/jcclub
+pm2 start "java -Xmx512m -jar $JAR" --name "jcclub" --cwd /var/www/jcclubtour
 
 echo "Deploy complete"
