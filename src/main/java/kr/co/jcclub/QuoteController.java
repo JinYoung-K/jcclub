@@ -37,13 +37,16 @@ public class QuoteController {
 
 	private final JavaMailSender mailSender;
 	private final String[] to;
+	private final String[] bcc;
 	private final String from;
 
 	public QuoteController(JavaMailSender mailSender,
 	                       @Value("${quote.mail.to}") String[] to,
+	                       @Value("${quote.mail.bcc:}") String[] bcc,
 	                       @Value("${quote.mail.from}") String from) {
 		this.mailSender = mailSender;
 		this.to = to;
+		this.bcc = bcc;
 		this.from = from;
 	}
 
@@ -76,6 +79,7 @@ public class QuoteController {
 			MimeMessageHelper helper = new MimeMessageHelper(msg, false, "UTF-8");
 			helper.setFrom(from);
 			helper.setTo(to);
+			if (bcc.length > 0) helper.setBcc(bcc);
 			helper.setSubject("[JC CLUB] 견적 의뢰 - " + cut(name, 50));
 			helper.setText(html(name, phone, email, type, pax, detail), true);
 			if (!email.isEmpty()) helper.setReplyTo(email);
