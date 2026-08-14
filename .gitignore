@@ -3,6 +3,9 @@ HELP.md
 
 # 서버에서 이 디렉터리가 배포 계정의 홈이라 SSH 키가 여기 놓인다
 .ssh/
+
+# 메일 계정 등 서버 전용 설정
+config/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
