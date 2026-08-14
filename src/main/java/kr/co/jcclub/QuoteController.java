@@ -1,6 +1,8 @@
 package kr.co.jcclub;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -19,6 +21,7 @@ import java.util.Map;
 @RequestMapping("/api/quote")
 public class QuoteController {
 
+	private static final Logger log = LoggerFactory.getLogger(QuoteController.class);
 	private static final long MIN_INTERVAL_MS = 60_000;
 
 	// ponytail: 단일 인스턴스 메모리 LRU. 서버가 여러 대로 늘어나면 Redis 등 공용 저장소로 교체
@@ -80,6 +83,7 @@ public class QuoteController {
 		try {
 			mailSender.send(msg);
 		} catch (MailException e) {
+			log.error("견적 메일 발송 실패", e);
 			return ResponseEntity.status(502).body(Map.of("error", "send_failed"));
 		}
 		return ResponseEntity.ok(Map.of("status", "ok"));
