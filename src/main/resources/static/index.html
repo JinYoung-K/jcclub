@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JC CLUB — MICE &amp; Travel</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block">
 <style>
   html, body { margin: 0; padding: 0; background: #f8f9fa; }
   body { font-family: 'Noto Sans KR', sans-serif; color: #333333; -webkit-font-smoothing: antialiased; }
@@ -21,8 +21,14 @@
     letter-spacing: normal; text-transform: none; display: inline-block;
     white-space: nowrap; word-wrap: normal; direction: ltr;
     -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased;
+    visibility: hidden;
   }
+  html.icons-ready .material-symbols-outlined { visibility: visible; }
 </style>
+<script>
+  document.fonts.load('24px "Material Symbols Outlined"')
+    .then(function () { document.documentElement.classList.add('icons-ready'); });
+</script>
 </head>
 <body>
 
@@ -399,6 +405,7 @@
             <label data-t="fDetail" style="display:block;margin-bottom:8px;font-size:14px;font-weight:600;color:#333333"></label>
             <textarea name="detail" rows="4" data-t-ph="pDetail" style="width:100%;padding:13px 14px;border:1px solid #dddddd;border-radius:4px;font-size:15px;color:#333333;resize:vertical"></textarea>
           </div>
+          <input name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
           <div style="grid-column:1 / -1">
             <button type="submit" data-t="fSubmit" style="width:100%;padding:17px;border:none;border-radius:4px;background:#ac3231;color:#ffffff;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.12);transition:background 200ms" style-hover="background:#c9302c"></button>
           </div>
@@ -481,7 +488,7 @@
   </section>
 
   <footer style="padding:72px 10% 32px;background:#001e40;color:#ffffff">
-    <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:24px;margin-bottom:48px">
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;margin-bottom:48px">
       <div style="display:flex;flex-direction:column;align-items:center;text-align:center">
         <img src="assets/jcclub-logo-footer.webp" alt="JACY CLUB" style="height:100px;width:auto;display:block;margin-bottom:20px">
         <p style="margin:0 0 24px;max-width:260px;font-size:15px;line-height:1.6;color:#a7c8ff">Premium MICE &amp; Hospitality Service Provider connecting South Korea to the World.</p>
@@ -505,18 +512,9 @@
           <p style="margin:0">PT. JC CLUB INDONESIA | T: 021-4586-9499 | F: 021-4586-9198</p>
         </div>
       </div>
-      <div>
-        <h4 style="margin:0 0 20px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.12);font-size:17px;font-weight:600">Quick Links</h4>
-        <div style="display:flex;flex-direction:column;gap:12px;font-size:15px">
-          <a href="#quote" data-t="linkQuote" style="color:#ffffff" style-hover="color:#fd6d67"></a>
-          <a href="#about" style="color:#ffffff" style-hover="color:#fd6d67">Privacy Policy</a>
-          <a href="#about" style="color:#ffffff" style-hover="color:#fd6d67">Terms of Service</a>
-          <a href="#about" style="color:#ffffff" style-hover="color:#fd6d67">Partner Login</a>
-        </div>
-      </div>
     </div>
     <div style="padding-top:28px;border-top:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:space-between;font-size:13px;color:#a7c8ff">
-      <p style="margin:0">© 2024 JC CLUB (주식회사 제이씨클럽). All rights reserved.</p>
+      <p style="margin:0">© 2026 JC CLUB (주식회사 제이씨클럽). All rights reserved.</p>
     </div>
   </footer>
 

@@ -24,9 +24,9 @@ const STR = {
     aboutBody: '주식회사 제이씨클럽은 다년간의 노하우를 바탕으로 정부 기관, 글로벌 기업, 하이엔드 고객들에게 차별화된 서비스를 제공해 왔습니다. 단순한 여행사를 넘어, 대한민국을 대표하는 MICE 및 VIP 의전 전문 그룹으로 성장하고 있습니다.',
     whyPro: '10년 이상의 베테랑 전문가들로 구성된 전문 운영팀.', whyNet: '한국, 인도네시아 현지 법인을 통한 안정적인 공급망.',
     whyRel: '검증된 숙박시설과 직영 차량을 통한 절대적인 안전 보장.', whyTailor: '고객 한 분 한 분의 니즈를 반영한 100% 맞춤 기획.',
-    linkQuote: '견적의뢰 (Quote Request)', close: '닫기',
+    close: '닫기',
     okToast: '견적 의뢰가 접수되었습니다. 24시간 이내에 회신 드립니다.',
-    errToast: '성함과 연락처 또는 이메일을 입력해 주세요.'
+    errToast: '성함과 연락처 또는 이메일을 입력해 주세요.', sendErr: '전송에 실패했습니다. 잠시 후 다시 시도해 주세요.', tooMany: '너무 잦은 요청입니다. 1분 후 다시 시도해 주세요.', sending: '전송 중...'
   },
   en: {
     headerCta: 'Request quote', consult: 'Request a consultation', browse: 'Browse programs', quote: 'Request a quote', miceCta: 'See MICE services',
@@ -52,9 +52,9 @@ const STR = {
     aboutBody: 'Built on years of know-how, JC CLUB has delivered distinctive service to government bodies, global corporations and high-end clients — growing beyond a travel agency into a leading MICE and VIP protocol group.',
     whyPro: 'An operations team of specialists with 10+ years of experience.', whyNet: 'A stable supply chain through our Korean and Indonesian entities.',
     whyRel: 'Verified accommodation and directly operated vehicles for absolute safety.', whyTailor: 'Fully bespoke planning shaped around each client.',
-    linkQuote: 'Quote request', close: 'Dismiss',
+    close: 'Dismiss',
     okToast: 'Your quote request was received. We will reply within 24 hours.',
-    errToast: 'Please enter your name and a phone number or email.'
+    errToast: 'Please enter your name and a phone number or email.', sendErr: 'Failed to send. Please try again in a moment.', tooMany: 'Too many requests. Please try again in a minute.', sending: 'Sending...'
   },
   id: {
     headerCta: 'Minta penawaran', consult: 'Ajukan konsultasi', browse: 'Lihat program', quote: 'Minta penawaran', miceCta: 'Lihat layanan MICE',
@@ -80,9 +80,9 @@ const STR = {
     aboutBody: 'Dengan pengalaman bertahun-tahun, JC CLUB memberikan layanan istimewa bagi lembaga pemerintah, perusahaan global, dan klien kelas atas — tumbuh melampaui agen perjalanan menjadi grup MICE dan protokol VIP terkemuka.',
     whyPro: 'Tim operasi yang terdiri dari spesialis dengan pengalaman 10+ tahun.', whyNet: 'Rantai pasok stabil melalui entitas kami di Korea dan Indonesia.',
     whyRel: 'Akomodasi terverifikasi dan kendaraan milik sendiri demi keamanan penuh.', whyTailor: 'Perencanaan sepenuhnya disesuaikan untuk setiap klien.',
-    linkQuote: 'Permintaan penawaran', close: 'Tutup',
+    close: 'Tutup',
     okToast: 'Permintaan penawaran Anda telah kami terima. Kami membalas dalam 24 jam.',
-    errToast: 'Mohon isi nama serta nomor telepon atau email Anda.'
+    errToast: 'Mohon isi nama serta nomor telepon atau email Anda.', sendErr: 'Gagal mengirim. Silakan coba lagi nanti.', tooMany: 'Terlalu banyak permintaan. Silakan coba lagi dalam satu menit.', sending: 'Mengirim...'
   }
 };
 
@@ -1864,8 +1864,35 @@ form.addEventListener('submit', function (e) {
   var phone = (form.elements.phone.value || '').trim();
   var email = (form.elements.email.value || '').trim();
   if (!name || (!phone && !email)) { showToast(t.errToast); return; }
-  showToast(t.okToast);
-  form.reset();
+
+  var btn = form.querySelector('button[type="submit"]');
+  var btnText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = t.sending;
+
+  fetch('/api/quote', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: name,
+      phone: phone,
+      email: email,
+      type: form.elements.type.value || '',
+      pax: form.elements.pax.value || '',
+      detail: form.elements.detail.value || '',
+      website: form.elements.website.value || ''
+    })
+  }).then(function (res) {
+    if (res.status === 429) { showToast(t.tooMany); return; }
+    if (!res.ok) throw new Error(res.status);
+    showToast(t.okToast);
+    form.reset();
+  }).catch(function () {
+    showToast(t.sendErr);
+  }).then(function () {
+    btn.disabled = false;
+    btn.textContent = btnText;
+  });
 });
 
 /* ---- language ---- */
